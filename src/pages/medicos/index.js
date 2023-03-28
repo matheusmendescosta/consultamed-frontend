@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import { Box, Container } from "@mui/system";
 import CardHeader from "@mui/material/CardHeader";
 import { styled } from "@mui/material/styles";
-import ApiMedico from "../../api/medico/ApiMedico.js";
+import ApiMedico from "../../service/medico/ApiMedico.js";
 import Paper from "@mui/material/Paper";
 import { Stack } from "@mui/material";
 import Head from "next/head.js";

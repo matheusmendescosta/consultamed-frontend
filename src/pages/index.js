@@ -66,8 +66,12 @@ export default function Album() {
                 A plataforma <strong>consultamed</strong> é a solução ideal para médicos, clínicas e pacientes.
               </Typography>
               <Stack sx={{ pt: 4 }} direction="row" spacing={2} justifyContent="center">
-                <Button variant="contained">Faça seu login</Button>
-                <Button variant="outlined">Cadastre-se gratuitamente</Button>
+                <Link href="/auth/login">
+                  <Button variant="contained">Faça seu login</Button>
+                </Link>
+                <Link style={{}} href="/auth/cadastrar">
+                  <Button variant="outlined">Cadastre-se gratuitamente</Button>
+                </Link>
               </Stack>
             </Container>
           </Box>

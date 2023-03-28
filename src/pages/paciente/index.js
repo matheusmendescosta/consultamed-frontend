@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar/index.js";
-import ApiPaciente from "../../api/paciente/ApiPaciente.js";
+import ApiPaciente from "../../service/paciente/ApiPaciente.js";
 
 export async function getServerSideProps({ params }) {
   const pacientes = await ApiPaciente.getPacientes();

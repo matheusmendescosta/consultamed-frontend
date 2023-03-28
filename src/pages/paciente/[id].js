@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar/index.js";
 import { useRouter } from "next/router";
-import ApiPaciente from "../../api/paciente/ApiPaciente.js";
+import ApiPaciente from "../../service/paciente/ApiPaciente.js";
 
 export async function getServerSideProps({ params }) {
   const pacientes = await ApiPaciente.getPacientes();

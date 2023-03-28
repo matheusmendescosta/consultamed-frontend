@@ -1,13 +1,44 @@
-import Footer from "@/components/Footer";
-import FormInputDate from "@/components/FormInputDate";
-import FormInputText from "@/components/FormInputText";
+import { useState } from "react";
+import { useRouter } from "next/router";
 import Navbar from "@/components/Navbar";
-import { Box, Button, Typography } from "@mui/material";
+import { Alert, Box, Button, Grid, TextField, Typography } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Container } from "@mui/system";
 import Head from "next/head";
+import ApiPaciente from "../../../service/paciente/ApiPaciente.js";
+import styled from "@emotion/styled";
+
+const Item = styled("div")(({}) => ({
+  borderRadius: "4px",
+  textAlign: "left",
+  margin: "10px",
+}));
 
 export default function cadastrarPaciente() {
+  const [nome, setNome] = useState("");
+  const [dataNascimento, setDataNascimento] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("");
+  const router = useRouter(); //router push redirecionar para pagina do paciente https://nextjs.org/docs/api-reference/next/router
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    try {
+      const response = await ApiPaciente.postPaciente({ nome, email, telefone, dataNascimento });
+      console.log(response); // dados retornados pelo servidor
+      // setNome("");
+      // setDataNascimento("");
+      // setTelefone("");
+      // setEmail("");
+      router.push(`/paciente/${1}`);
+      setStatus("Paciente cadastrado com sucesso");
+    } catch (error) {
+      console.error(error);
+      setStatus("Error interno paciente não cadastrado");
+    }
+  }
+
   return (
     <>
       <Head>
@@ -53,13 +84,79 @@ export default function cadastrarPaciente() {
           >
             Agendamento simples e fácil
           </Typography>
-          <FormInputText labelText="Nome" DescriptioText="Nome Completo" />
-          <FormInputDate DescriptionText="Data de Nascimento" />
-          <FormInputText labelText="Telefone" DescriptioText="Telefone para contato" />
-          <FormInputText labelText="Email" DescriptioText="Email" />
-          <Button variant="contained" endIcon={<SendIcon />}>
-            Cadastrar
-          </Button>
+          <form onSubmit={handleSubmit}>
+            <Grid container>
+              <Grid item={true} xs={12}>
+                <Item item={true}>
+                  <TextField
+                    fullWidth
+                    type="text"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                    id="nome"
+                    label="Nome"
+                    variant="outlined"
+                  />
+                </Item>
+              </Grid>
+              <Grid item={true} xs={6}>
+                <Item>
+                  <TextField
+                    type="date"
+                    value={dataNascimento}
+                    onChange={(e) => setDataNascimento(e.target.value)}
+                    fullWidth
+                    //label="DD/MM/AAAA"
+                    id="dataNascimento"
+                  />
+                  {/* <label>
+                    data de nascimento:
+                    <input type="date" value={dataNascimento} onChange={(e) => setDataNascimento(e.target.value)} />
+                  </label> */}
+                </Item>
+              </Grid>
+              <Grid item={true} xs={6}>
+                <Item>
+                  <TextField
+                    type="number"
+                    value={telefone}
+                    min="10"
+                    max="100"
+                    onChange={(e) => setTelefone(e.target.value)}
+                    fullWidth
+                    label="Telefone"
+                    id="telefone"
+                  />
+                  {/* <label>
+                    Telefone:
+                    <input type="text" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+                  </label> */}
+                </Item>
+              </Grid>
+              <Grid item={true} xs={12}>
+                <Item>
+                  <TextField
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    fullWidth
+                    label="Email"
+                    id="email"
+                  />
+                  {/* <label>
+                    Email:
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  </label> */}
+                </Item>
+              </Grid>
+            </Grid>
+            <Box sx={{ textAlign: "right", marginTop: 5, margin: 1 }}>
+              <Button endIcon={<SendIcon />} variant="contained" type="submit">
+                Cadastrar
+              </Button>
+            </Box>
+          </form>
+          {status && <Alert severity="success">{status}</Alert>}
         </Box>
       </Container>
     </>

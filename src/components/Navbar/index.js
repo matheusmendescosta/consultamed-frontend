@@ -137,7 +137,7 @@ function Navbar() {
               <MenuItem>
                 <List>
                   <ListItem>
-                    <a onClick={handleCloseNavMenu}>
+                    <button onClick={handleCloseNavMenu}>
                       <Link
                         style={{
                           color: "black",
@@ -146,10 +146,10 @@ function Navbar() {
                       >
                         Cadastrar
                       </Link>
-                    </a>
+                    </button>
                   </ListItem>
                   <ListItem>
-                    <a onClick={handleCloseNavMenu}>
+                    <button onClick={handleCloseNavMenu}>
                       <Link
                         style={{
                           color: "black",
@@ -158,7 +158,7 @@ function Navbar() {
                       >
                         Login
                       </Link>
-                    </a>
+                    </button>
                   </ListItem>
                 </List>
               </MenuItem>
