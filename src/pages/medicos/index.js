@@ -6,6 +6,7 @@ import ApiMedico from "../../api/medico/ApiMedico.js";
 import Paper from "@mui/material/Paper";
 import { Stack } from "@mui/material";
 import Head from "next/head.js";
+import Image from "next/image.js";
 
 export async function getServerSideProps() {
   const medicos = await ApiMedico.getMedicos();
@@ -40,19 +41,22 @@ export default function Medicos(props) {
           return (
             <Box sx={{ width: "100%" }}>
               <Stack spacing={3}>
-                <Item>
-                  <p>
-                    <strong>Doutor:</strong> {item.nome}
-                  </p>
-                  <p>
-                    <strong>Especialidade:</strong> {item.especialidade}
-                  </p>
-                  <p>
-                    <strong>Telefone:</strong> {item.telefone}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {item.email}
-                  </p>
+                <Item sx={{ display: "flex" }}>
+                  <Image src="/4136933.jpg" alt="Picture of the author" width={200} height={200} />
+                  <Box sx={{ ml: 5 }}>
+                    <p>
+                      <strong>Doutor:</strong> {item.nome}
+                    </p>
+                    <p>
+                      <strong>Especialidade:</strong> {item.especialidade}
+                    </p>
+                    <p>
+                      <strong>Telefone:</strong> {item.telefone}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {item.email}
+                    </p>
+                  </Box>
                 </Item>
               </Stack>
             </Box>

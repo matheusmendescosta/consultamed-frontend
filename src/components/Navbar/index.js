@@ -10,8 +10,10 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import Link from "next/link";
+import { List, ListItem } from "@mui/material";
 
-const pages = ["Pacientes", "Medicos", "Clinicas"];
+//const pages = ["Pacientes", "Medicos", "Clinicas"];
 const settings = ["Cadastrar-se", "Login"];
 
 function Navbar() {
@@ -84,40 +86,32 @@ function Navbar() {
               sx={{
                 display: { xs: "block", md: "none" },
               }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            ></Menu>
           </Box>
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            CONSULTAMED
-          </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: "white", display: "block" }}>
-                {page}
-              </Button>
-            ))}
+            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: "white", display: "block" }}>
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "white",
+                }}
+                href="/medicos"
+              >
+                Medicos
+              </Link>
+            </Button>
+            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: "white", display: "block" }}>
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "white",
+                }}
+                href="/paciente"
+              >
+                Paciente
+              </Link>
+            </Button>
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Abrir informações">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -140,11 +134,34 @@ function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem>
+                <List>
+                  <ListItem>
+                    <a onClick={handleCloseNavMenu}>
+                      <Link
+                        style={{
+                          color: "black",
+                        }}
+                        href="/auth/cadastrar"
+                      >
+                        Cadastrar
+                      </Link>
+                    </a>
+                  </ListItem>
+                  <ListItem>
+                    <a onClick={handleCloseNavMenu}>
+                      <Link
+                        style={{
+                          color: "black",
+                        }}
+                        href="/auth/login"
+                      >
+                        Login
+                      </Link>
+                    </a>
+                  </ListItem>
+                </List>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
