@@ -24,6 +24,7 @@ export default function paciente(props) {
   return (
     <>
       <Navbar />
+
       <h1> aaaaaa {props.pacientes.map((elemt) => elemt.nome)}</h1>
     </>
   );

@@ -43,7 +43,7 @@ export default function Album() {
         <title>Consultamed</title>
         <meta name="description" content="Agendamento de consultas online" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/faviconHome.ico" />
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
