@@ -8,6 +8,12 @@ const paciente = {
     return data;
   },
 
+  getPaciente: async function (id) {
+    let res = await axios.get("http://localhost:3030/paciente/", { params: { id } });
+    let { data } = await res;
+    return data;
+  },
+
   postPaciente: async function (dados) {
     try {
       const res = await axios.post("http://localhost:3030/paciente/", dados);

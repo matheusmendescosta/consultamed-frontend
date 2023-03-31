@@ -27,11 +27,7 @@ export default function cadastrarPaciente() {
     try {
       const response = await ApiPaciente.postPaciente({ nome, email, telefone, dataNascimento });
       console.log(response); // dados retornados pelo servidor
-      // setNome("");
-      // setDataNascimento("");
-      // setTelefone("");
-      // setEmail("");
-      router.push(`/paciente/${1}`);
+      router.push(`/paciente/${response.id}`);
       setStatus("Paciente cadastrado com sucesso");
     } catch (error) {
       console.error(error);
@@ -106,13 +102,8 @@ export default function cadastrarPaciente() {
                     value={dataNascimento}
                     onChange={(e) => setDataNascimento(e.target.value)}
                     fullWidth
-                    //label="DD/MM/AAAA"
                     id="dataNascimento"
                   />
-                  {/* <label>
-                    data de nascimento:
-                    <input type="date" value={dataNascimento} onChange={(e) => setDataNascimento(e.target.value)} />
-                  </label> */}
                 </Item>
               </Grid>
               <Grid item={true} xs={6}>
@@ -127,10 +118,6 @@ export default function cadastrarPaciente() {
                     label="Telefone"
                     id="telefone"
                   />
-                  {/* <label>
-                    Telefone:
-                    <input type="text" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
-                  </label> */}
                 </Item>
               </Grid>
               <Grid item={true} xs={12}>
@@ -143,10 +130,6 @@ export default function cadastrarPaciente() {
                     label="Email"
                     id="email"
                   />
-                  {/* <label>
-                    Email:
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                  </label> */}
                 </Item>
               </Grid>
             </Grid>
