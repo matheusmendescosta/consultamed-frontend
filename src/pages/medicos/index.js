@@ -102,7 +102,7 @@ export default function Medicos(props) {
         />
         {props.medicos.map((item) => {
           return (
-            <Box sx={{ width: "100%" }}>
+            <Box key={item.id} sx={{ width: "100%" }}>
               <Stack spacing={3}>
                 <Item sx={{ display: "flex" }}>
                   <Image src="/4136933.jpg" alt="Picture of the author" width={200} height={200} />

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const consulta = {
   getConsultas: async function () {
-    let res = await axios.get("http://localhost:3030/consulta?pacienteId=2");
+    let res = await axios.get("http://localhost:3030/consulta");
     let { data } = await res;
     return data;
   },
@@ -16,6 +16,15 @@ const consulta = {
   postConsulta: async function (dados) {
     try {
       let res = await axios.post("http://localhost:3030/consulta", dados);
+      return res.data;
+    } catch (error) {
+      throw new Error(error.res.data);
+    }
+  },
+
+  postHistoricoConsultas: async function (dados) {
+    try {
+      let res = await axios.post("http://localhost:3030/historicoConsultas", dados);
       return res.data;
     } catch (error) {
       throw new Error(error.res.data);
