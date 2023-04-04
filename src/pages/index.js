@@ -26,6 +26,7 @@ import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import ChildCareIcon from "@mui/icons-material/ChildCare";
 import BiotechIcon from "@mui/icons-material/Biotech";
+import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import styled from "@emotion/styled";
 import { Paper } from "@mui/material";
@@ -45,7 +46,7 @@ function Copyright() {
 
 const theme = createTheme();
 
-export default function Album() {
+export default function Home() {
   const especialistas = [
     { Nome: "Clínico Geral", Image: <MedicationIcon /> },
     { Nome: "Psiquiatria", Image: <PsychologyAltIcon /> },
@@ -53,6 +54,7 @@ export default function Album() {
     { Nome: "Urologia", Image: <MaleIcon /> },
     { Nome: "Pediatria", Image: <ChildCareIcon /> },
     { Nome: "Dermatologia", Image: <BiotechIcon /> },
+    { Nome: "Cardiologia", Image: <MonitorHeartIcon /> },
   ];
 
   const depoimentos = [
@@ -88,7 +90,7 @@ export default function Album() {
               // pb: 6,
             }}
           >
-            <Grid container sx={{ height: "80vh" }}>
+            <Grid container sx={{ height: "100vh" }}>
               <Grid xs={8}>
                 <Box
                   sx={{
@@ -203,7 +205,13 @@ export default function Album() {
               </Grid>
             </Grid>
             <Grid container sx={{ height: "20vh" }}>
-              <Grid xs={12} sx={{ display: { xs: "none", md: "flex", justifyContent: "start" }, marginLeft: 5 }}>
+              <Grid
+                xs={12}
+                sx={{
+                  display: { xs: "none", md: "flex", justifyContent: "space-around" },
+                  marginLeft: 5,
+                }}
+              >
                 {especialistas.map((esp) => {
                   return (
                     <Box
@@ -217,7 +225,7 @@ export default function Album() {
                       }}
                     >
                       <Stack spacing={2} sx={{ color: "#3FC1F9", margin: 2, marginTop: 6 }}>
-                        <Typography>{esp.Image}</Typography>
+                        <Typography fontSize="large">{esp.Image}</Typography>
                         <Typography color="black">{esp.Nome}</Typography>
                       </Stack>
                     </Box>
