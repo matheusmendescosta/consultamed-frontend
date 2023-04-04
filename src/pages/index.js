@@ -204,12 +204,11 @@ export default function Home() {
                 </Button>
               </Grid>
             </Grid>
-            <Grid container sx={{ height: "20vh" }}>
+            <Grid container sx={{ height: "30vh" }}>
               <Grid
                 xs={12}
                 sx={{
                   display: { xs: "none", md: "flex", justifyContent: "space-around" },
-                  marginLeft: 5,
                 }}
               >
                 {especialistas.map((esp) => {
@@ -233,7 +232,7 @@ export default function Home() {
                 })}
               </Grid>
             </Grid>
-            <Grid container sx={{ height: "30vh", marginTop: 4 }}>
+            <Grid container sx={{ height: "30vh" }}>
               <Grid xs={12} sx={{ display: { xs: "none", md: "flex", justifyContent: "start" }, marginLeft: 5 }}>
                 <Typography variant="h5" fontFamily="Inter" fontWeight="bold">
                   O que falam sobre nós ?{" "}
