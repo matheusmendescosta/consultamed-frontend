@@ -18,6 +18,17 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "@/components/Navbar";
 import Head from "next/head";
 import Image from "next/image";
+import AddAlertIcon from "@mui/icons-material/AddAlert";
+import DescriptionIcon from "@mui/icons-material/Description";
+import MedicationIcon from "@mui/icons-material/Medication";
+import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
+import FemaleIcon from "@mui/icons-material/Female";
+import MaleIcon from "@mui/icons-material/Male";
+import ChildCareIcon from "@mui/icons-material/ChildCare";
+import BiotechIcon from "@mui/icons-material/Biotech";
+import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
+import styled from "@emotion/styled";
+import { Paper } from "@mui/material";
 
 function Copyright() {
   return (
@@ -32,11 +43,31 @@ function Copyright() {
   );
 }
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 const theme = createTheme();
 
 export default function Album() {
+  const especialistas = [
+    { Nome: "Clínico Geral", Image: <MedicationIcon /> },
+    { Nome: "Psiquiatria", Image: <PsychologyAltIcon /> },
+    { Nome: "Ginecologia", Image: <FemaleIcon /> },
+    { Nome: "Urologia", Image: <MaleIcon /> },
+    { Nome: "Pediatria", Image: <ChildCareIcon /> },
+    { Nome: "Dermatologia", Image: <BiotechIcon /> },
+  ];
+
+  const depoimentos = [
+    {
+      Texto: "O médico que me atendeu é muito bom, super atencioso.",
+      Pessoa: "Pamela Silva",
+      Localidade: "Santarém -PA",
+    },
+    {
+      Texto: "Excelente! A consulta online judou muito na correria do dia a dia",
+      Pessoa: "Cleuma Teixeira",
+      Localidade: "Rio de Janeiro - RJ",
+    },
+  ];
+
   return (
     <>
       <Head>
@@ -53,27 +84,196 @@ export default function Album() {
           <Box
             sx={{
               bgcolor: "background.paper",
-              pt: 8,
-              pb: 6,
+              // pt: 8,
+              // pb: 6,
             }}
           >
-            <Container maxWidth="sm">
-              <Image src="/5138237.jpg" alt="Picture of the author" width={500} height={500} />
-              <Typography component="h1" variant="h2" align="center" color="text.primary" gutterBottom>
-                Consultamed
-              </Typography>
-              <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                A plataforma <strong>consultamed</strong> é a solução ideal para médicos, clínicas e pacientes.
-              </Typography>
-              <Stack sx={{ pt: 4 }} direction="row" spacing={2} justifyContent="center">
-                <Link href="/auth/login">
-                  <Button variant="contained">Faça seu login</Button>
-                </Link>
-                <Link style={{}} href="/auth/cadastrar">
-                  <Button variant="outlined">Cadastre-se gratuitamente</Button>
-                </Link>
-              </Stack>
-            </Container>
+            <Grid container sx={{ height: "80vh" }}>
+              <Grid xs={8}>
+                <Box
+                  sx={{
+                    textAlign: "left",
+                    justifyContent: "center",
+                    marginLeft: 50,
+                    marginTop: 8,
+                  }}
+                >
+                  <Box sx={{ fontFamily: "Inter", fontWeight: "bold" }}>
+                    <Typography fontFamily="Inter" fontWeight="bold" variant="h5">
+                      AGENDE SUA CONSULTA AGORA MESMO!
+                    </Typography>
+                  </Box>
+                  <Box sx={{ fontWeight: "light", typography: "subtitle2", color: "#777777" }}>
+                    <Typography variant="strong">
+                      Evite filas, salas de espera, custos de deslocamentos.
+                      <br /> Aqui você encontra acesso a saúde de qualidade por um preço justo.
+                    </Typography>
+                  </Box>
+                  <Box sx={{ margin: 2, display: { xs: "none", md: "flex", justifyContent: "flex-start" } }}>
+                    <Box
+                      sx={{
+                        backgroundColor: "#3FC1F9",
+                        width: 300,
+                        height: 220,
+                        borderRadius: "16px",
+                        margin: 1,
+                        boxShadow: 3,
+                        "&:hover": {
+                          //border: "1px solid blue",
+                          //opacity: [0.9, 0.8, 0.7],
+                        },
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: { xs: "none", md: "flex", justifyContent: "center", margin: 60 },
+                        }}
+                      >
+                        <Stack spacing={2}>
+                          <AddAlertIcon fontSize="large" sx={{ color: "white" }} />
+                          <Typography color="#FFFF">Planos à partir de R$59,99</Typography>
+                        </Stack>
+                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        backgroundColor: "#FFFFFF",
+                        width: 300,
+                        height: 220,
+                        borderRadius: "16px",
+                        margin: 1,
+                        boxShadow: 3,
+                        "&:hover": {
+                          //border: "1px solid blue",
+                          //opacity: [0.9, 0.8, 0.7],
+                        },
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          textAlign: "center",
+                          alignContent: "center",
+                          marginTop: 7.5,
+                          display: { xs: "none", md: "flex", justifyContent: "center" },
+                        }}
+                      >
+                        <Stack spacing={2}>
+                          <DescriptionIcon fontSize="large" sx={{ color: "#3FC1F9" }} />
+                          <Typography textAlign="left" color="black">
+                            Renovação de Receita <br />à partir de R$ 48,99
+                          </Typography>
+                        </Stack>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid xs={4}>
+                <Box sx={{ marginTop: 10 }}>
+                  <Image src="/headerMed.png" alt="medico recebendo agendamento" width={434.58} height={652.39} />
+                </Box>
+              </Grid>
+            </Grid>
+            <Grid container sx={{ height: "20vh" }}>
+              <Grid xs={8}>
+                <Typography variant="h5" fontFamily="Inter" marginLeft={10} fontWeight="bold">
+                  AGENDE COM OS NOSSOS ESPECIALISTAS
+                </Typography>
+                <Typography fontFamily="Inter" fontSize={18} marginLeft={10} color="#777777">
+                  Selecione a especialidade que deseja, e o nosso profissional entrará <br /> em contato no horário e
+                  data escolhido por você.{" "}
+                </Typography>
+              </Grid>
+              <Grid xs={4}>
+                <Button
+                  sx={{
+                    backgroundColor: "#3FC1F9",
+                    width: 253,
+                    height: 82,
+                    fontFamily: "Inter",
+                    size: 16,
+                    color: "#FFFF",
+                  }}
+                  size="large"
+                  variant="contained"
+                >
+                  {" "}
+                  Todas as especialidades
+                </Button>
+              </Grid>
+            </Grid>
+            <Grid container sx={{ height: "20vh" }}>
+              <Grid xs={12} sx={{ display: { xs: "none", md: "flex", justifyContent: "start" }, marginLeft: 5 }}>
+                {especialistas.map((esp) => {
+                  return (
+                    <Box
+                      sx={{
+                        backgroundColor: "#FFFFFF",
+                        width: 187,
+                        height: 157,
+                        borderRadius: "16px",
+                        margin: 2,
+                        boxShadow: 3,
+                      }}
+                    >
+                      <Stack spacing={2} sx={{ color: "#3FC1F9", margin: 2, marginTop: 6 }}>
+                        <Typography>{esp.Image}</Typography>
+                        <Typography color="black">{esp.Nome}</Typography>
+                      </Stack>
+                    </Box>
+                  );
+                })}
+              </Grid>
+            </Grid>
+            <Grid container sx={{ height: "30vh", marginTop: 4 }}>
+              <Grid xs={12} sx={{ display: { xs: "none", md: "flex", justifyContent: "start" }, marginLeft: 5 }}>
+                <Typography variant="h5" fontFamily="Inter" fontWeight="bold">
+                  O que falam sobre nós ?{" "}
+                  <Typography fontFamily="Inter" fontSize={18} color="#777777">
+                    Veja a experiência dos nossos usuários
+                    <br /> que utilizam a telemedicina para facilitar seu dia a dia
+                  </Typography>
+                  <Box
+                    sx={{
+                      margin: 3,
+                      backgroundColor: "#3FC1F9",
+                      borderRadius: 1,
+                      width: 264,
+                      height: 82,
+                      textAlign: "center",
+                      padding: 1,
+                    }}
+                  >
+                    <Button sx={{ color: "white" }}>Consulte-se agora mesmo</Button>
+                  </Box>
+                </Typography>
+                {depoimentos.map((dep) => {
+                  return (
+                    <Box
+                      sx={{
+                        backgroundColor: "#FFFFFF",
+                        width: 320,
+                        height: 270,
+                        borderRadius: "16px",
+                        margin: 2,
+                        boxShadow: 3,
+                      }}
+                    >
+                      <FormatQuoteIcon fontSize="large" sx={{ color: "#3FC1F9" }} />
+                      <Typography variant="h6" margin={2} color="#69777F">
+                        {dep.Texto}
+                      </Typography>
+                      <Typography variant="subtitle1" margin={2} color="#69777F">
+                        {dep.Pessoa}
+                      </Typography>
+                      <Typography variant="subtitle1" fontSize={14} margin={2} color="##69777F">
+                        {dep.Localidade}
+                      </Typography>
+                    </Box>
+                  );
+                })}
+              </Grid>
+            </Grid>
           </Box>
         </main>
       </ThemeProvider>

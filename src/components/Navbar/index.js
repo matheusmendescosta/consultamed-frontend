@@ -12,6 +12,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Link from "next/link";
 import { List, ListItem } from "@mui/material";
+import Image from "next/image";
 
 //const pages = ["Pacientes", "Medicos", "Clinicas"];
 const settings = ["Cadastrar-se", "Login"];
@@ -37,7 +38,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar sx={{ backgroundColor: "inherit" }} position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -48,27 +49,25 @@ function Navbar() {
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
+              fontFamily: "Inter",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: "#000000",
               textDecoration: "none",
             }}
           >
-            CONSULTAMED
+            <Image src={"/iconNavbar.png"} width={100} height={60} />
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              {/* <MenuIcon /> */}
-            </IconButton>
+              color="#000000"
+            ></IconButton>
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -87,13 +86,15 @@ function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             ></Menu>
-          </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          </Box> */}
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex", justifyContent: "flex-end" } }}>
             <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: "white", display: "block" }}>
               <Link
                 style={{
                   textDecoration: "none",
-                  color: "white",
+                  color: "#000000",
+                  fontFamily: "Inter",
+                  textTransform: "lowercase",
                 }}
                 href="/medicos"
               >
@@ -104,15 +105,69 @@ function Navbar() {
               <Link
                 style={{
                   textDecoration: "none",
-                  color: "white",
+                  color: "#000000",
+                  fontFamily: "Inter",
+                  textTransform: "lowercase",
                 }}
                 href="/paciente"
               >
                 Paciente
               </Link>
             </Button>
+            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: "white", display: "block" }}>
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "#000000",
+                  fontFamily: "Inter",
+                  textTransform: "lowercase",
+                }}
+                href="#"
+              >
+                Agendamento
+              </Link>
+            </Button>
+            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: "white", display: "block" }}>
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "#000000",
+                  fontFamily: "Inter",
+                  textTransform: "lowercase",
+                }}
+                href="#"
+              >
+                Renovação de Receita
+              </Link>
+            </Button>
+            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: "white", display: "block" }}>
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "#000000",
+                  fontFamily: "Inter",
+                  textTransform: "lowercase",
+                }}
+                href="#"
+              >
+                Login
+              </Link>
+            </Button>
+            <Button onClick={handleCloseNavMenu} sx={{ my: 2, backgroundColor: "#3FC1F9", display: "block" }}>
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "#000000",
+                  fontFamily: "Inter",
+                  textTransform: "lowercase",
+                }}
+                href="#"
+              >
+                Cadastrar
+              </Link>
+            </Button>
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
+          {/* <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Abrir informações">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="I" src="" />
@@ -163,7 +218,7 @@ function Navbar() {
                 </List>
               </MenuItem>
             </Menu>
-          </Box>
+          </Box> */}
         </Toolbar>
       </Container>
     </AppBar>
