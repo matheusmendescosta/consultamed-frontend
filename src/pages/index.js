@@ -232,7 +232,7 @@ export default function Home() {
                 })}
               </Grid>
             </Grid>
-            <Grid container sx={{ height: "30vh" }}>
+            <Grid container sx={{ height: "40vh" }}>
               <Grid xs={12} sx={{ display: { xs: "none", md: "flex", justifyContent: "start" }, marginLeft: 5 }}>
                 <Typography variant="h5" fontFamily="Inter" fontWeight="bold">
                   O que falam sobre nós ?{" "}
