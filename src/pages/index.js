@@ -131,7 +131,7 @@ export default function Home() {
                           display: { xs: "none", md: "flex", justifyContent: "center", margin: 60 },
                         }}
                       >
-                        <Stack spacing={2}>
+                        <Stack>
                           <AddAlertIcon fontSize="large" sx={{ color: "white" }} />
                           <Typography color="#FFFF">Planos à partir de R$59,99</Typography>
                         </Stack>
@@ -159,7 +159,7 @@ export default function Home() {
                           display: { xs: "none", md: "flex", justifyContent: "center" },
                         }}
                       >
-                        <Stack spacing={2}>
+                        <Stack>
                           <DescriptionIcon fontSize="large" sx={{ color: "#3FC1F9" }} />
                           <Typography textAlign="left" color="black">
                             Renovação de Receita <br />à partir de R$ 48,99
@@ -223,7 +223,7 @@ export default function Home() {
                         boxShadow: 3,
                       }}
                     >
-                      <Stack spacing={2} sx={{ color: "#3FC1F9", margin: 2, marginTop: 6 }}>
+                      <Stack sx={{ color: "#3FC1F9", margin: 2, marginTop: 6 }}>
                         <Typography fontSize="large">{esp.Image}</Typography>
                         <Typography color="black">{esp.Nome}</Typography>
                       </Stack>
@@ -279,6 +279,53 @@ export default function Home() {
                     </Box>
                   );
                 })}
+              </Grid>
+            </Grid>
+            <Grid container sx={{ height: "100vh" }}>
+              <Grid xs={6}>
+                <Box sx={{ margin: 5 }}>
+                  <Image src="/usingmobile.png" width={600} height={670} />
+                </Box>
+              </Grid>
+              <Grid xs={6}>
+                <Box sx={{ paddingTop: 18 }}>
+                  <Typography variant="h5" fontFamily="Inter" fontWeight="bold">
+                    COMO FUNCIONA O AGENDAMENTO DE CONSULTA?
+                  </Typography>
+                  <Typography variant="subtitle1" margin={2} color="#69777F">
+                    Hoje em dia realizar uma teleconsulta está mais rápido e fácil. E com a nossa plataforma você
+                    consegue agendar e consultar-se de maneira acessível e prática.{" "}
+                  </Typography>
+                  <Typography variant="subtitle1" margin={2} color="#69777F">
+                    1 - Escolha a sua modalidade de atendimento, plantão 24hrs ou agendamento;
+                    <br /> 2- Caso você opte pelo agendamento, escolha o horário que gostaria de ser atendido;
+                    <br /> 3- Agora você pode escolher como deseja realizar o pagamento, aceitamos cartão de crédito,
+                    débito e pix.
+                    <br /> 4- No momento do atendimento, lembre-se de que esteja em um local com bom sinal de internet,
+                    com seu microfone e câmera funcionando.{" "}
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+            <Grid container sx={{ height: "5vh" }}>
+              <Grid xs={12}>
+                <Box sx={{ marginLeft: 3 }}>
+                  <Image src="/iconNavbar.png" width={147} height={83} />
+                </Box>
+                <Box
+                  sx={{
+                    backgroundColor: "#3FC1F9",
+                    width: 1,
+                    height: 1,
+                  }}
+                >
+                  <Box sx={{ paddingTop: 2 }}>
+                    <Typography sx={{ color: "white", fontFamily: "Open Sans", marginLeft: 6 }}>
+                      © 2023 Brasil ConsultaMED - CNPJ: 00.000.000/0001-00 - CREMESP 994707
+                      <br /> Desenvolvido por Matheus Mendes
+                    </Typography>
+                  </Box>
+                </Box>
               </Grid>
             </Grid>
           </Box>
