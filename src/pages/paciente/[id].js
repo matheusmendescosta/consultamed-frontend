@@ -1,4 +1,4 @@
-import { useState } from "react";
+import * as React from "react";
 import moment from "moment";
 import ApiPaciente from "../../service/paciente/ApiPaciente.js";
 import ApiMedico from "../../service/medico/ApiMedico.js";
@@ -32,6 +32,9 @@ import Image from "next/image.js";
 import { Box } from "@mui/system";
 import Head from "next/head.js";
 import "moment/locale/pt-br";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Item = styled(Paper)(({ theme }) => ({
   //backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -41,6 +44,14 @@ const Item = styled(Paper)(({ theme }) => ({
   margin: 20,
   //color: theme.palette.text.secondary,
 }));
+
+function blobToDataURL(blob, callback) {
+  var a = new FileReader();
+  a.onload = function (e) {
+    callback(e.target.result);
+  };
+  a.readAsDataURL(blob);
+}
 
 export async function getServerSideProps({ params }) {
   const pacientes = await ApiPaciente.getPaciente(params);
@@ -75,27 +86,52 @@ export async function getServerSideProps({ params }) {
 }
 
 export default function paciente(props) {
-  const [medicoSelecionado, setMedicoSelecionado] = useState("");
-  const [data, setData] = useState("");
-  const [hora, setHora] = useState("");
-  const [status, setStatus] = useState("");
-  const [open, setOpen] = useState(false);
-
+  const [medicoSelecionado, setMedicoSelecionado] = React.useState("");
+  const [data, setData] = React.useState("");
+  const [hora, setHora] = React.useState("");
+  const [status, setStatus] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const [imgUrl, setImgUrl] = React.useState("");
+  console.log(imgUrl);
   const router = useRouter();
   const paciente_id = router.query.id;
   const informacoesPaciente = props.pacientes.find((pacient) => pacient.id == paciente_id);
+  const imagemBlobArray = informacoesPaciente.image_perfil.data;
+
+  React.useEffect(function () {
+    const blob = new Blob(imagemBlobArray, { type: "text/plain" });
+    blobToDataURL(blob, function (dataUrl) {
+      console.log("data url", dataUrl);
+      setImgUrl(dataUrl);
+    });
+  }, []);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={handleClose}>
+        Fechar
+      </Button>
+      <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   const historicoConsultaPaciente = props.historicoConsultas.filter(
     (pacient) => pacient.consulta.pacienteId == paciente_id
   );
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleChange = (event) => {
     setMedicoSelecionado(event.target.value);
@@ -105,11 +141,13 @@ export default function paciente(props) {
     event.preventDefault();
     try {
       const response = await ApiConsulta.postConsulta({
-        dataHora: data,
+        data: data,
+        hora: hora,
         medicoId: medicoSelecionado,
         pacienteId: parseInt(paciente_id),
       });
       setData("");
+      setMedicoSelecionado("");
       console.log(response); // dados retornados pelo servidor
       setStatus("Consulta cadastrado com sucesso");
     } catch (error) {
@@ -117,7 +155,6 @@ export default function paciente(props) {
       setStatus("Error interno consulta não cadastrado");
     }
   }
-
   const tituloPagina = `Paciente ${informacoesPaciente.nome}`;
 
   return (
@@ -132,7 +169,7 @@ export default function paciente(props) {
       <Grid container>
         <Grid item xs={6}>
           <Box sx={{ margin: 4 }}>
-            <Image src="/4136933.jpg" alt="Picture of the author" width={200} height={200} />
+            <img src={imgUrl} alt="Imagem Perfil" />
             <p>Nome: {informacoesPaciente.nome}</p>
             <p>Data de Nascimento: {informacoesPaciente.dataNascimento}</p>
             <p>Telefone: {informacoesPaciente.telefone}</p>
@@ -180,10 +217,11 @@ export default function paciente(props) {
                 </Select>
               </FormControl>
               <Box sx={{ display: "flex", textAlign: "right", marginTop: 5, margin: 1 }}>
-                <Button variant="contained" type="submit">
+                <Button onClick={handleClick} variant="contained" type="submit">
                   Agendar
                 </Button>
-                <Box sx={{ marginLeft: 2 }}>
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} message={status} action={action} />
+                {/* <Box sx={{ marginLeft: 2 }}>
                   <Button variant="outlined" onClick={handleClickOpen}>
                     Todos agendamentos
                   </Button>
@@ -211,10 +249,10 @@ export default function paciente(props) {
                       </Button>
                     </DialogActions>
                   </Dialog>
-                </Box>
+                </Box> */}
               </Box>
             </form>
-            {status && <Alert severity="success">{status}</Alert>}
+            {/* {status && <Alert severity="success">{status}</Alert>} */}
           </Box>
         </Grid>
         <Grid item xs={12}>

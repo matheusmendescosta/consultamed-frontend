@@ -18,12 +18,21 @@ const Item = styled("div")(({}) => ({
   margin: "10px",
 }));
 
+function blobToDataURL(blob, callback) {
+  var a = new FileReader();
+  a.onload = function (e) {
+    callback(e.target.result);
+  };
+  a.readAsDataURL(blob);
+}
+
 export default function cadastrarPaciente() {
   const [status, setStatus] = React.useState("");
   const [checkedAlergia, setCheckedAlergia] = React.useState(false);
   const [checkedDoencaCronica, setCheckedDoencaCronica] = React.useState(false);
   const [checkedMedicacaoContinua, setCheckedMedicacaoContinua] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [imgPerfil, setImgPerfil] = React.useState("");
   const router = useRouter(); //router push redirecionar para pagina do paciente https://nextjs.org/docs/api-reference/next/router
 
   const handleClick = () => {
@@ -91,6 +100,7 @@ export default function cadastrarPaciente() {
         tipo_doenca_cronica: eventSave.tipoDoencaCronica,
         medicacao_continua: checkedDoencaCronica,
         tipo_medicacao_continua: eventSave.tipoMedicacaoContinua,
+        image_perfil: imgPerfil,
       });
       console.log(response); // dados retornados pelo servidor
       router.push(`/paciente/${response.id}`);
@@ -112,11 +122,16 @@ export default function cadastrarPaciente() {
   const handleChangeMedicacaoContinua = (event) => {
     setCheckedMedicacaoContinua(event.target.checked);
   };
+  console.log("image perfil", eventSave.imagePerfil);
 
-  console.log("alergia", checkedAlergia);
-  console.log("medicacao", checkedMedicacaoContinua);
-  console.log("doenca", checkedDoencaCronica);
-
+  const handleChangeImgFile = (event) => {
+    blobToDataURL(event.target.files[0], function (dataURL) {
+      updateEventSave({ imagePerfil: event.target.value });
+      setImgPerfil(dataURL);
+    });
+    //console.log(event.target.files[0]);
+  };
+  //console.log("img teste", imgPerfil);
   return (
     <>
       <Head>
@@ -184,6 +199,18 @@ export default function cadastrarPaciente() {
                   Informações Pessoais
                 </Typography>
                 <Box sx={{ padding: 4 }}>
+                  <Grid item={true} xs={12}>
+                    <Item item={true}>
+                      <label>Escolha uma foto para o perfil</label>
+                      <TextField
+                        fullWidth
+                        type="file"
+                        value={eventSave.imagePerfil}
+                        onChange={handleChangeImgFile}
+                        variant="outlined"
+                      />
+                    </Item>
+                  </Grid>
                   <Grid item={true} xs={12}>
                     <Item item={true}>
                       <TextField
