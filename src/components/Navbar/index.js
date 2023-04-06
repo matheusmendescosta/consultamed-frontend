@@ -56,7 +56,7 @@ function Navbar() {
               textDecoration: "none",
             }}
           >
-            <Image src={"/iconNavbar.png"} width={100} height={60} />
+            <Image src={"/iconNavbar.png"} width={100} height={60} alt="icone_navbar" />
           </Typography>
 
           {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>

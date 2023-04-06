@@ -19,6 +19,7 @@ export default function Medico() {
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
+
   const router = useRouter(); //router push redirecionar para pagina do paciente https://nextjs.org/docs/api-reference/next/router
 
   async function handleSubmit(event) {
