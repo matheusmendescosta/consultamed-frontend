@@ -11,8 +11,6 @@ import Image from "next/image.js";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
-//const filter = createFilterOptions();
-
 export async function getServerSideProps() {
   const medicos = await ApiMedico.getMedicos();
   return {
@@ -33,7 +31,9 @@ const filter = createFilterOptions();
 
 export default function Medicos(props) {
   const listaMedicos = props.medicos.map((med) => med.nome);
-  console.log(listaMedicos);
+
+  console.log("medicos", props.medicos);
+
   const [value, setValue] = React.useState(null);
   return (
     <>
@@ -111,13 +111,13 @@ export default function Medicos(props) {
                       <strong>Doutor:</strong> {item.nome}
                     </p>
                     <p>
-                      <strong>Especialidade:</strong> {item.especialidade}
-                    </p>
-                    <p>
                       <strong>Telefone:</strong> {item.telefone}
                     </p>
                     <p>
                       <strong>Email:</strong> {item.email}
+                    </p>
+                    <p>
+                      <strong>Especialidade:</strong> {item.especialidade.nome}
                     </p>
                   </Box>
                 </Item>

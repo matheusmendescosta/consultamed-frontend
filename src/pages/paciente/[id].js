@@ -36,22 +36,22 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-const Item = styled(Paper)(({ theme }) => ({
-  //backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  //...theme.typography.body2,
-  //padding: theme.spacing(1),
-  textAlign: "center",
-  margin: 20,
-  //color: theme.palette.text.secondary,
-}));
+// const Item = styled(Paper)(({ theme }) => ({
+//   //backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+//   //...theme.typography.body2,
+//   //padding: theme.spacing(1),
+//   textAlign: "center",
+//   margin: 20,
+//   //color: theme.palette.text.secondary,
+// }));
 
-function blobToDataURL(blob, callback) {
-  var a = new FileReader();
-  a.onload = function (e) {
-    callback(e.target.result);
-  };
-  a.readAsDataURL(blob);
-}
+// function blobToDataURL(blob, callback) {
+//   var a = new FileReader();
+//   a.onload = function (e) {
+//     callback(e.target.result);
+//   };
+//   a.readAsDataURL(blob);
+// }
 
 export async function getServerSideProps({ params }) {
   const pacientes = await ApiPaciente.getPaciente(params);
@@ -91,20 +91,20 @@ export default function paciente(props) {
   const [hora, setHora] = React.useState("");
   const [status, setStatus] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  const [imgUrl, setImgUrl] = React.useState("");
-  console.log(imgUrl);
+  // const [imgUrl, setImgUrl] = React.useState("");
+  // console.log(imgUrl);
   const router = useRouter();
   const paciente_id = router.query.id;
   const informacoesPaciente = props.pacientes.find((pacient) => pacient.id == paciente_id);
-  const imagemBlobArray = informacoesPaciente.image_perfil.data;
+  // const imagemBlobArray = informacoesPaciente.image_perfil.data;
 
-  React.useEffect(function () {
-    const blob = new Blob(imagemBlobArray, { type: "text/plain" });
-    blobToDataURL(blob, function (dataUrl) {
-      console.log("data url", dataUrl);
-      setImgUrl(dataUrl);
-    });
-  }, []);
+  // React.useEffect(function () {
+  //   const blob = new Blob(imagemBlobArray, { type: "text/plain" });
+  //   blobToDataURL(blob, function (dataUrl) {
+  //     console.log("data url", dataUrl);
+  //     setImgUrl(dataUrl);
+  //   });
+  // }, []);
 
   const handleClick = () => {
     setOpen(true);
@@ -169,7 +169,7 @@ export default function paciente(props) {
       <Grid container>
         <Grid item xs={6}>
           <Box sx={{ margin: 4 }}>
-            <img src={imgUrl} alt="Imagem Perfil" />
+            {/* <img src={imgUrl} alt="Imagem Perfil" /> */}
             <p>Nome: {informacoesPaciente.nome}</p>
             <p>Data de Nascimento: {informacoesPaciente.dataNascimento}</p>
             <p>Telefone: {informacoesPaciente.telefone}</p>

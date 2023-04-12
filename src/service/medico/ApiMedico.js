@@ -7,6 +7,12 @@ const medico = {
     return data;
   },
 
+  getEspecialidades: async function () {
+    let res = await axios.get("http://localhost:3030/especialidades");
+    let { data } = await res;
+    return data;
+  },
+
   postMedico: async function (dados) {
     try {
       const res = await axios.post("http://localhost:3030/medico/", dados);

@@ -100,7 +100,7 @@ export default function cadastrarPaciente() {
         tipo_doenca_cronica: eventSave.tipoDoencaCronica,
         medicacao_continua: checkedDoencaCronica,
         tipo_medicacao_continua: eventSave.tipoMedicacaoContinua,
-        image_perfil: imgPerfil,
+        // image_perfil: imgPerfil,
       });
       console.log(response); // dados retornados pelo servidor
       router.push(`/paciente/${response.id}`);
@@ -122,15 +122,15 @@ export default function cadastrarPaciente() {
   const handleChangeMedicacaoContinua = (event) => {
     setCheckedMedicacaoContinua(event.target.checked);
   };
-  console.log("image perfil", eventSave.imagePerfil);
+  // console.log("image perfil", eventSave.imagePerfil);
 
-  const handleChangeImgFile = (event) => {
-    blobToDataURL(event.target.files[0], function (dataURL) {
-      updateEventSave({ imagePerfil: event.target.value });
-      setImgPerfil(dataURL);
-    });
-    //console.log(event.target.files[0]);
-  };
+  // const handleChangeImgFile = (event) => {
+  //   blobToDataURL(event.target.files[0], function (dataURL) {
+  //     updateEventSave({ imagePerfil: event.target.value });
+  //     setImgPerfil(dataURL);
+  //   });
+  //   console.log(event.target.files[0]);
+  // };
   //console.log("img teste", imgPerfil);
   return (
     <>
@@ -199,7 +199,7 @@ export default function cadastrarPaciente() {
                   Informações Pessoais
                 </Typography>
                 <Box sx={{ padding: 4 }}>
-                  <Grid item={true} xs={12}>
+                  {/* <Grid item={true} xs={12}>
                     <Item item={true}>
                       <label>Escolha uma foto para o perfil</label>
                       <TextField
@@ -210,7 +210,7 @@ export default function cadastrarPaciente() {
                         variant="outlined"
                       />
                     </Item>
-                  </Grid>
+                  </Grid> */}
                   <Grid item={true} xs={12}>
                     <Item item={true}>
                       <TextField

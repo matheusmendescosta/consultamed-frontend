@@ -2,7 +2,7 @@ import { useState } from "react";
 import ApiMedico from "../../../service/medico/ApiMedico.js";
 import Navbar from "@/components/Navbar";
 import styled from "@emotion/styled";
-import { Alert, Button, Grid, TextField, Typography } from "@mui/material";
+import { Alert, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Box, Container } from "@mui/system";
 import { useRouter } from "next/router";
@@ -13,19 +13,40 @@ const Item = styled("div")(({}) => ({
   margin: "10px",
 }));
 
-export default function Medico() {
+export async function getServerSideProps() {
+  const especialidades = await ApiMedico.getEspecialidades();
+
+  return {
+    props: {
+      especialidades,
+    },
+  };
+}
+
+export default function Medico(props) {
   const [nome, setNome] = useState("");
   const [especialidade, setEspecialidade] = useState("");
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
+  const [crm, setCrm] = useState("");
 
   const router = useRouter(); //router push redirecionar para pagina do paciente https://nextjs.org/docs/api-reference/next/router
+
+  const handleChange = (event) => {
+    setEspecialidade(event.target.value);
+  };
 
   async function handleSubmit(event) {
     event.preventDefault();
     try {
-      const response = await ApiMedico.postMedico({ nome, email, telefone, especialidade });
+      const response = await ApiMedico.postMedico({
+        nome: nome,
+        email: email,
+        telefone: telefone,
+        especialidadeId: especialidade,
+        crm: crm,
+      });
       console.log(response); // dados retornados pelo servidor
       router.push(`/medicos`);
       setStatus("Medico cadastrado com sucesso");
@@ -34,6 +55,7 @@ export default function Medico() {
       setStatus("Error interno medico não cadastrado");
     }
   }
+
   return (
     <>
       <Navbar />
@@ -88,16 +110,26 @@ export default function Medico() {
                   />
                 </Item>
               </Grid>
-              <Grid item={true} xs={6}>
+              <Grid item={true} xs={12}>
                 <Item>
-                  <TextField
-                    type="text"
-                    value={especialidade}
-                    onChange={(e) => setEspecialidade(e.target.value)}
-                    label="Especialidade"
-                    fullWidth
-                    id="dataNascimento"
-                  />
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Médicos</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={especialidade}
+                      label="Médicos"
+                      onChange={handleChange}
+                    >
+                      {props.especialidades.map((elem) => {
+                        return (
+                          <MenuItem key={elem.id} value={elem.id}>
+                            {elem.nome}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
                 </Item>
               </Grid>
               <Grid item={true} xs={6}>
@@ -114,7 +146,7 @@ export default function Medico() {
                   />
                 </Item>
               </Grid>
-              <Grid item={true} xs={12}>
+              <Grid item={true} xs={6}>
                 <Item>
                   <TextField
                     type="email"
@@ -123,6 +155,18 @@ export default function Medico() {
                     fullWidth
                     label="Email"
                     id="email"
+                  />
+                </Item>
+              </Grid>
+              <Grid item={true} xs={12}>
+                <Item>
+                  <TextField
+                    type="text"
+                    value={crm}
+                    onChange={(e) => setCrm(e.target.value)}
+                    fullWidth
+                    label="CRM"
+                    id="crm"
                   />
                 </Item>
               </Grid>
