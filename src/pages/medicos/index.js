@@ -10,6 +10,7 @@ import Head from "next/head.js";
 import Image from "next/image.js";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import Footer from "@/components/Footer/index.js";
 
 export async function getServerSideProps() {
   const medicos = await ApiMedico.getMedicos();
@@ -45,7 +46,7 @@ export default function Medicos(props) {
       </Head>
 
       <Navbar />
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ height: "100vh" }}>
         <CardHeader title="Consultamed" subheader="Conheça nossos medicos e agende sua consulta" />
         <Autocomplete
           value={value}
@@ -102,13 +103,13 @@ export default function Medicos(props) {
         />
         {props.medicos.map((item) => {
           return (
-            <Box key={item.id} sx={{ width: "100%" }}>
+            <Box key={item.id} sx={{}}>
               <Stack spacing={3}>
                 <Item sx={{ display: "flex" }}>
                   <Image src="/4136933.jpg" alt="Picture of the author" width={200} height={200} />
                   <Box sx={{ ml: 5 }}>
                     <p>
-                      <strong>Doutor:</strong> {item.nome}
+                      <strong>Doutor(a):</strong> {item.nome}
                     </p>
                     <p>
                       <strong>Telefone:</strong> {item.telefone}

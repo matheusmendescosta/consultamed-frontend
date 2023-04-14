@@ -18,6 +18,7 @@ import {
   InputLabel,
   ListItem,
   MenuItem,
+  Modal,
   Paper,
   Select,
   TextField,
@@ -36,22 +37,30 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-// const Item = styled(Paper)(({ theme }) => ({
-//   //backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-//   //...theme.typography.body2,
-//   //padding: theme.spacing(1),
-//   textAlign: "center",
-//   margin: 20,
-//   //color: theme.palette.text.secondary,
-// }));
+import List from "@mui/material/List";
 
-// function blobToDataURL(blob, callback) {
-//   var a = new FileReader();
-//   a.onload = function (e) {
-//     callback(e.target.result);
-//   };
-//   a.readAsDataURL(blob);
-// }
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
+import Footer from "@/components/Footer/index.js";
+
+const style = {
+  padding: 7,
+  width: "100%",
+  maxWidth: 1,
+  bgcolor: "background.paper",
+};
+
+const styleModal = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 700,
+  bgcolor: "white",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 export async function getServerSideProps({ params }) {
   const pacientes = await ApiPaciente.getPaciente(params);
@@ -91,23 +100,38 @@ export default function paciente(props) {
   const [hora, setHora] = React.useState("");
   const [status, setStatus] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  // const [imgUrl, setImgUrl] = React.useState("");
-  // console.log(imgUrl);
+  const [openAlert, setOpenAlert] = React.useState(false);
+
   const router = useRouter();
   const paciente_id = router.query.id;
+
   const informacoesPaciente = props.pacientes.find((pacient) => pacient.id == paciente_id);
-  // const imagemBlobArray = informacoesPaciente.image_perfil.data;
 
-  // React.useEffect(function () {
-  //   const blob = new Blob(imagemBlobArray, { type: "text/plain" });
-  //   blobToDataURL(blob, function (dataUrl) {
-  //     console.log("data url", dataUrl);
-  //     setImgUrl(dataUrl);
-  //   });
-  // }, []);
+  const historicoConsultaPaciente = props.historicoConsultas.filter(
+    (pacient) => pacient.consulta.pacienteId == paciente_id
+  );
 
-  const handleClick = () => {
-    setOpen(true);
+  const proximasConsultas = props.consultas.filter((proximaConsulta) => proximaConsulta.pacienteId == paciente_id);
+
+  // const consultasSemHistorico = consultas.filter(consulta => {
+  //   const consultaId = consulta.id;
+  //   const hasHistorico = historico_consulta.find(historico => historico.consultaId === consultaId);
+  //   return !hasHistorico;
+  // });
+
+  const consultasSemHistorico = props.consultas.filter((consulta) => {
+    if (consulta.pacienteId == paciente_id) {
+      const temHistoricoConsulta = props.historicoConsultas.some((historico) => historico.consultaId === consulta.id);
+      return !temHistoricoConsulta;
+    }
+  });
+
+  console.log("consulta sem historico", consultasSemHistorico);
+
+  const tituloPagina = `Paciente ${informacoesPaciente.nome}`;
+
+  const handleClickAlert = () => {
+    setOpenAlert(true);
   };
 
   const handleClose = (event, reason) => {
@@ -118,6 +142,8 @@ export default function paciente(props) {
     setOpen(false);
   };
 
+  const handleOpen = () => setOpen(true);
+
   const action = (
     <React.Fragment>
       <Button color="secondary" size="small" onClick={handleClose}>
@@ -127,10 +153,6 @@ export default function paciente(props) {
         <CloseIcon fontSize="small" />
       </IconButton>
     </React.Fragment>
-  );
-
-  const historicoConsultaPaciente = props.historicoConsultas.filter(
-    (pacient) => pacient.consulta.pacienteId == paciente_id
   );
 
   const handleChange = (event) => {
@@ -146,8 +168,9 @@ export default function paciente(props) {
         medicoId: medicoSelecionado,
         pacienteId: parseInt(paciente_id),
       });
-      setData("");
-      setMedicoSelecionado("");
+      // setData("");
+      // setMedicoSelecionado("");
+      router.reload();
       console.log(response); // dados retornados pelo servidor
       setStatus("Consulta cadastrado com sucesso");
     } catch (error) {
@@ -155,7 +178,6 @@ export default function paciente(props) {
       setStatus("Error interno consulta não cadastrado");
     }
   }
-  const tituloPagina = `Paciente ${informacoesPaciente.nome}`;
 
   return (
     <>
@@ -166,125 +188,265 @@ export default function paciente(props) {
         <link rel="icon" href="/medicos.ico" />
       </Head>
       <Navbar />
-      <Grid container>
-        <Grid item xs={6}>
-          <Box sx={{ margin: 4 }}>
-            {/* <img src={imgUrl} alt="Imagem Perfil" /> */}
-            <p>Nome: {informacoesPaciente.nome}</p>
-            <p>Data de Nascimento: {informacoesPaciente.dataNascimento}</p>
-            <p>Telefone: {informacoesPaciente.telefone}</p>
-            <p>Email: {informacoesPaciente.email}</p>
+      <Grid container sx={{ marginBottom: 10 }}>
+        <Grid item xs={8}>
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex", justifyContent: "flex-start", margin: 50 },
+            }}
+          >
+            <Image src={"/profiledefault.png"} width={275} height={250} alt="Imagem do perfil de ususario" />
+            <Box sx={{ margin: 2 }}>Bem vindo {informacoesPaciente.nome}</Box>
+          </Box>
+          <Box>
+            <List sx={style} component="nav">
+              <Typography
+                variant="p"
+                noWrap
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex", justifyContent: "center" },
+                  fontWeight: 700,
+                  letterSpacing: ".1rem",
+                  color: "grey",
+                  textDecoration: "none",
+                }}
+              >
+                Suas informações pessoais
+              </Typography>
+              <ListItem>
+                <strong>Nome: </strong> {informacoesPaciente.nome}
+              </ListItem>
+              <Divider />
+              <ListItem divider>
+                {" "}
+                <strong>Data de nascimento: </strong> {informacoesPaciente.dataNascimento}
+              </ListItem>
+              <ListItem>
+                {" "}
+                <strong>Telefone: </strong> {informacoesPaciente.telefone}
+              </ListItem>
+              <Divider light />
+              <ListItem>
+                {" "}
+                <strong>email: </strong> {informacoesPaciente.email}
+              </ListItem>
+              <Divider light />
+              <ListItem>
+                {" "}
+                <strong>altura: </strong> {informacoesPaciente.altura}
+              </ListItem>
+              <Divider light />
+              <ListItem>
+                {" "}
+                <strong>peso: </strong> {informacoesPaciente.peso}
+              </ListItem>{" "}
+              <Typography
+                variant="p"
+                noWrap
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex", justifyContent: "center" },
+                  fontWeight: 700,
+                  letterSpacing: ".1rem",
+                  color: "grey",
+                  textDecoration: "none",
+                }}
+              >
+                Seu Endereço
+              </Typography>
+              <ListItem>
+                {" "}
+                <strong>Rua: </strong> {informacoesPaciente.rua}
+              </ListItem>
+              <Divider />
+              <ListItem divider>
+                {" "}
+                <strong>Bairro: </strong> {informacoesPaciente.bairro}
+              </ListItem>
+              <ListItem>
+                {" "}
+                <strong>Municipio: </strong> {informacoesPaciente.municipio}
+              </ListItem>
+              <Divider light />
+              <ListItem>
+                {" "}
+                <strong>Estado: </strong> {informacoesPaciente.estado}
+              </ListItem>
+              <Divider light />
+              <ListItem>
+                {" "}
+                <strong>Cep: </strong> {informacoesPaciente.cep}
+              </ListItem>
+              <Divider light />
+              <ListItem>
+                {" "}
+                <strong>Numero: </strong> {informacoesPaciente.numero}
+              </ListItem>{" "}
+            </List>
           </Box>
         </Grid>
-        <Grid item xs={6}>
+        <Grid sx={4}>
           <Box sx={{ margin: 4 }}>
-            <Typography>
-              <h7>
-                Olá <strong>{informacoesPaciente.nome}</strong> selecione a data e o horario e o médico para sua proxima
-                consulta
-              </h7>
-            </Typography>
-            <form onSubmit={handleSubmit}>
-              <strong>Informe o dia</strong>
-              <TextField
-                type="date"
-                value={data}
-                onChange={(e) => setData(e.target.value)}
-                fullWidth
-                id="dataNascimento"
-              />
-              <strong>Informe a hora</strong>
-              <TextField
-                type="time"
-                value={hora}
-                onChange={(e) => setHora(e.target.value)}
-                fullWidth
-                id="dataNascimento"
-              />
-              <strong>Selecione o seu médico</strong>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Médicos</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={medicoSelecionado}
-                  label="Médicos"
-                  onChange={handleChange}
-                >
-                  {props.medicos.map((elem) => {
-                    return <MenuItem value={elem.id}>{elem.nome}</MenuItem>;
-                  })}
-                </Select>
-              </FormControl>
-              <Box sx={{ display: "flex", textAlign: "right", marginTop: 5, margin: 1 }}>
-                <Button onClick={handleClick} variant="contained" type="submit">
-                  Agendar
-                </Button>
-                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} message={status} action={action} />
-                {/* <Box sx={{ marginLeft: 2 }}>
-                  <Button variant="outlined" onClick={handleClickOpen}>
-                    Todos agendamentos
-                  </Button>
-                  <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogTitle id="alert-dialog-title">{"Confira todas as suas consultas"}</DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description">
-                        {historicoConsultaPaciente.map((informacoes) => {
-                          return (
-                            <ListItem>
-                              Suas consultas: {moment(informacoes.dataHora).locale("pt-br").format("LLLL")}
-                            </ListItem>
-                          );
-                        })}
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={handleClose} autoFocus>
-                        Ok
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                </Box> */}
+            <Button variant="contained" onClick={handleOpen}>
+              Agendar um consulta
+            </Button>
+          </Box>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={styleModal}>
+              <Box sx={{ margin: 4 }}>
+                <Typography>
+                  <h7>
+                    Olá <strong>{informacoesPaciente.nome}</strong> selecione a data e o horario e o médico para sua
+                    proxima consulta
+                  </h7>
+                </Typography>
+                <form onSubmit={handleSubmit}>
+                  <strong>Informe o dia</strong>
+                  <TextField
+                    type="date"
+                    value={data}
+                    onChange={(e) => setData(e.target.value)}
+                    fullWidth
+                    id="dataNascimento"
+                  />
+                  <strong>Informe a hora</strong>
+                  <TextField
+                    type="time"
+                    value={hora}
+                    onChange={(e) => setHora(e.target.value)}
+                    fullWidth
+                    id="dataNascimento"
+                  />
+                  <strong>Selecione o seu médico</strong>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Médicos</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={medicoSelecionado}
+                      label="Médicos"
+                      onChange={handleChange}
+                    >
+                      {props.medicos.map((elem) => {
+                        return (
+                          <MenuItem key={elem.id} value={elem.id}>
+                            {elem.nome}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                  <Box sx={{ display: "flex", textAlign: "right", marginTop: 5, margin: 1 }}>
+                    <Button onClick={handleClickAlert} variant="contained" type="submit">
+                      Agendar
+                    </Button>
+                    <Snackbar
+                      open={openAlert}
+                      autoHideDuration={6000}
+                      onClose={handleClose}
+                      message={status}
+                      action={action}
+                    />
+                  </Box>
+                </form>
               </Box>
-            </form>
-            {/* {status && <Alert severity="success">{status}</Alert>} */}
+            </Box>
+          </Modal>
+          <Box>
+            <h4>Últimos agendamentos</h4>
+            {historicoConsultaPaciente.map((agendamento) => {
+              return (
+                <>
+                  <Accordion sx={{ margin: 2 }} key={agendamento.id}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <Typography>
+                        Consultas realizadas {moment(agendamento.consulta.data).add(1, "days").format("LL")}
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>Hora: {agendamento.consulta.hora}</Typography>
+                    </AccordionDetails>
+                    <AccordionDetails>
+                      <Typography>Médico: {agendamento.consulta.medico.nome}</Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                </>
+              );
+            })}
+            <h4>Próximos agendamentos</h4>
+            {consultasSemHistorico.map((consulta) => {
+              return (
+                <>
+                  <Accordion sx={{ margin: 2 }}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <Typography>
+                        Você tem uma consulta no dia {moment(consulta.data).add(1, "days").format("LL")}
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>Hora: {consulta.hora}</Typography>
+                    </AccordionDetails>
+                    <AccordionDetails>
+                      <Typography>Médico(a): {consulta.medico.nome}</Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                </>
+              );
+            })}
           </Box>
         </Grid>
         <Grid item xs={12}>
-          <Typography component="h3" variant="h2" align="left" color="text.primary" margin={4}>
+          <Typography component="h5" variant="h4" align="center" color="grey" margin={4}>
             Historico de consultas
           </Typography>
           {historicoConsultaPaciente.map((info) => {
             return (
-              <div>
-                <Accordion sx={{ margin: 2 }}>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-                    <Typography>
-                      Consultas do dia {moment(info.dataHota).format("LLL")} com o Doutor {info.consulta.medico.nome}
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography>Sintomas que você estava sentindo: {info.sintomas}</Typography>
-                  </AccordionDetails>
-                  <AccordionDetails>
-                    <Typography>
-                      Diagnostico atestado pelo médico {info.consulta.medico.nome}: {info.diagnostico}
-                    </Typography>
-                  </AccordionDetails>
-                  <AccordionDetails>
-                    <Typography>Tratamento {info.tratamento}</Typography>
-                  </AccordionDetails>
-                </Accordion>
+              <div key={info.id}>
+                <Box sx={{ paddingLeft: 10 }}>
+                  <Accordion sx={{ margin: 3 }}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <Typography>
+                        Consultas do dia {moment(info.dataHota).add(1, "days").format("LLL")} com o Doutor{" "}
+                        {info.consulta.medico.nome}
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>Sintomas que você estava sentindo: {info.sintomas}</Typography>
+                    </AccordionDetails>
+                    <AccordionDetails>
+                      <Typography>
+                        Diagnostico atestado pelo médico {info.consulta.medico.nome}: {info.diagnostico}
+                      </Typography>
+                    </AccordionDetails>
+                    <AccordionDetails>
+                      <Typography>Tratamento {info.tratamento}</Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                </Box>
               </div>
             );
           })}
         </Grid>
       </Grid>
+      <Footer />
     </>
   );
 }

@@ -27,6 +27,7 @@ import "moment/locale/pt-br";
 import styled from "@emotion/styled";
 
 import SendIcon from "@mui/icons-material/Send";
+import Sidebar from "@/components/Sidebar/index.js";
 
 export async function getServerSideProps() {
   const medicos = await ApiMedico.getMedicos();
@@ -96,6 +97,7 @@ export default function medico(props) {
   const listaConsultasPaciente = props.consultas.filter((medico) => medico.medicoId == medico_id);
   const listaHistoricoPaciente = props.historicoConsultas.filter((medico) => medico.consulta.medicoId == medico_id);
 
+  console.log("lista consultas", listaConsultasPaciente);
   async function handleSubmit(event) {
     event.preventDefault();
     const date = moment().format();
@@ -127,6 +129,7 @@ export default function medico(props) {
   return (
     <>
       <Navbar />
+      {/* <Sidebar /> */}
       <Box container="true" sx={{ padding: 2, width: "auto", height: 150 }}>
         <Typography variant="h4" fontStyle="normal">
           Bem vindo {informacoesMedico.nome}
@@ -178,7 +181,7 @@ export default function medico(props) {
               {listaConsultasPaciente.map((paciente) => {
                 return (
                   <MenuItem value={paciente.id}>
-                    {paciente.paciente.nome} em {moment(paciente.dataHora).format("DD/MM")}
+                    {paciente.paciente.nome} em {moment(paciente.data).format("DD/MM")}
                   </MenuItem>
                 );
               })}

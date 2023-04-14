@@ -1,40 +1,30 @@
-import { Box, Container, Paper, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
+import Image from "next/image";
 
 export default function Footer() {
   return (
-    <Paper
-      sx={{ marginTop: "calc(10% + 60px)", width: "100%", position: "fixed", bottom: 0, width: "100%" }}
-      component="footer"
-      square
-      variant="outlined"
-    >
-      <Container maxWidth="lg">
-        <Box
-          sx={{
-            flexGrow: 1,
-            justifyContent: "center",
-            display: "flex",
-            my: 1,
-          }}
-        >
-          <div>
-            <h2>Consultamed</h2>
-          </div>
-        </Box>
-
-        <Box
-          sx={{
-            flexGrow: 1,
-            justifyContent: "center",
-            display: "flex",
-            mb: 2,
-          }}
-        >
-          <Typography variant="caption" color="initial">
-            matheusdev
-          </Typography>
-        </Box>
-      </Container>
-    </Paper>
+    <>
+      <Grid container sx={{ height: "5vh" }}>
+        <Grid xs={12}>
+          <Box sx={{ marginLeft: 3 }}>
+            <Image src="/iconNavbar.png" width={147} height={83} />
+          </Box>
+          <Box
+            sx={{
+              backgroundColor: "#3FC1F9",
+              width: 1,
+              height: 1,
+            }}
+          >
+            <Box sx={{ paddingTop: 2 }}>
+              <Typography sx={{ color: "white", fontFamily: "Open Sans", marginLeft: 6 }}>
+                © 2023 Brasil ConsultaMED - CNPJ: 00.000.000/0001-00 - CREMESP 994707
+                <br /> Desenvolvido por Matheus Mendes
+              </Typography>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </>
   );
 }
