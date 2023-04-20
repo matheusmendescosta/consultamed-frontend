@@ -128,7 +128,7 @@ export default function paciente(props) {
 
   console.log("consulta sem historico", consultasSemHistorico);
 
-  const tituloPagina = `Paciente ${informacoesPaciente.nome}`;
+  const tituloPagina = `Olá Paciente ${informacoesPaciente.nome}`;
 
   const handleClickAlert = () => {
     setOpenAlert(true);

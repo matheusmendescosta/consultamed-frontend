@@ -25,9 +25,9 @@ import Tab from "@mui/material/Tab";
 import moment from "moment";
 import "moment/locale/pt-br";
 import styled from "@emotion/styled";
-
 import SendIcon from "@mui/icons-material/Send";
-import Sidebar from "@/components/Sidebar/index.js";
+import Head from "next/head.js";
+import Image from "next/image.js";
 
 export async function getServerSideProps() {
   const medicos = await ApiMedico.getMedicos();
@@ -75,13 +75,15 @@ function a11yProps(index) {
   };
 }
 
-const Item = styled(Paper)(({ theme }) => ({
-  //backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  //...theme.typography.body2,
-  //padding: theme.spacing(1),
+const ItemPacienteAgendado = styled(Paper)(() => ({
+  textAlign: "left",
+  padding: 5,
+  marginTop: 1,
+}));
+
+const Item = styled(Paper)(() => ({
   textAlign: "center",
   margin: 20,
-  //color: theme.palette.text.secondary,
 }));
 
 export default function medico(props) {
@@ -97,7 +99,16 @@ export default function medico(props) {
   const listaConsultasPaciente = props.consultas.filter((medico) => medico.medicoId == medico_id);
   const listaHistoricoPaciente = props.historicoConsultas.filter((medico) => medico.consulta.medicoId == medico_id);
 
-  console.log("lista consultas", listaConsultasPaciente);
+  const consultasSemHistorico = props.consultas.filter((consulta) => {
+    if (consulta.medicoId == medico_id) {
+      const temHistoricoConsulta = props.historicoConsultas.some((historico) => historico.consultaId === consulta.id);
+      return !temHistoricoConsulta;
+    }
+  });
+
+  const nomeMedico = `Olá Doutor ${informacoesMedico.nome}`;
+  console.log(consultasSemHistorico);
+
   async function handleSubmit(event) {
     event.preventDefault();
     const date = moment().format();
@@ -128,20 +139,64 @@ export default function medico(props) {
 
   return (
     <>
+      <Head>
+        <title>{nomeMedico}</title>
+        <meta name="description" content="Agendamento de consultas online" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/medicos.ico" />
+      </Head>
       <Navbar />
-      {/* <Sidebar /> */}
-      <Box container="true" sx={{ padding: 2, width: "auto", height: 150 }}>
-        <Typography variant="h4" fontStyle="normal">
-          Bem vindo {informacoesMedico.nome}
-        </Typography>
-      </Box>
-      <Box sx={{ marginTop: 2, width: "auto", padding: 2 }}>
+      <Grid container>
+        <Grid xs={8}>
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex", justifyContent: "flex-start", margin: 50 },
+            }}
+          >
+            <Image src={"/profiledefault.png"} width={275} height={250} alt="Imagem do perfil de ususario" />
+            <Box sx={{ margin: 2 }}>Bem vindo {informacoesMedico.nome}</Box>
+          </Box>
+        </Grid>
+        <Grid xs={4}>
+          <h4>Próximos agendamentos</h4>
+          {consultasSemHistorico.map((consulta) => {
+            return (
+              <>
+                <Accordion sx={{ margin: 2 }}>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+                    <Typography>
+                      Você tem uma consulta no dia {moment(consulta.data).add(1, "days").format("LL")}
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>Hora: {consulta.hora}</Typography>
+                  </AccordionDetails>
+                  <AccordionDetails>
+                    <Typography>Paciente: {consulta.paciente.nome}</Typography>
+                  </AccordionDetails>
+                </Accordion>
+              </>
+            );
+          })}
+        </Grid>
+      </Grid>
+      <Box sx={{ marginTop: 2, width: "auto", padding: 2, textAlign: "center" }}>
         <Typography variant="h6" fontStyle={"oblique"}>
           Confira sua agenda
         </Typography>
       </Box>
       <Box sx={{ width: "100%" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Box
+          sx={{
+            borderBottom: 1,
+            borderColor: "divider",
+            display: "flex",
+            justifyContent: "center",
+            p: 1,
+            m: 1,
+            borderRadius: 1,
+          }}
+        >
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Informações pessoais" {...a11yProps(0)} />
             <Tab label="Paciente agendados" {...a11yProps(1)} />
@@ -150,23 +205,53 @@ export default function medico(props) {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          {informacoesMedico.nome}
+          Nome: {informacoesMedico.nome} <br />
+          Telefone: {informacoesMedico.telefone}
+          <br />
+          Email: {informacoesMedico.email}
+          <br />
+          CRM: {informacoesMedico.crm}
+          <br />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          {listaConsultasPaciente.map((consultasPacientes) => {
-            return (
-              <Box key={consultasPacientes.id}>
-                <Accordion sx={{ margin: 2 }}>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-                    <Typography>
-                      Consultas do dia {moment(consultasPacientes.dataHota).format("DD/MM")} com o paciente{" "}
-                      {consultasPacientes.paciente.nome}
-                    </Typography>
-                  </AccordionSummary>
-                </Accordion>
-              </Box>
-            );
-          })}
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            {consultasSemHistorico.map((consultasPacientes) => {
+              return (
+                <Box
+                  key={consultasPacientes.id}
+                  sx={{
+                    width: 400,
+                    height: 1,
+                    p: 1,
+                    m: 1,
+                    borderRadius: 1,
+                    boxShadow: 2,
+                  }}
+                >
+                  <Typography sx={{ textAlign: "center", fontStyle: "oblique", margin: 1 }}>
+                    Informações do agendamento
+                  </Typography>
+                  <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    <ItemPacienteAgendado>Paciente: {consultasPacientes.paciente.nome}</ItemPacienteAgendado>
+                    <ItemPacienteAgendado>
+                      Data: {moment(consultasPacientes.data).add(1, "days").format("DD/MM/YYYY")}
+                    </ItemPacienteAgendado>
+                    <ItemPacienteAgendado>Hora: {consultasPacientes.hora}</ItemPacienteAgendado>
+                    <ItemPacienteAgendado>Contato: {consultasPacientes.paciente.telefone}</ItemPacienteAgendado>
+                    <ItemPacienteAgendado>
+                      Doença Cronica: {`${consultasPacientes.paciente.doenca_cronica == true ? "Sim" : "Não"}`}
+                    </ItemPacienteAgendado>
+                    <ItemPacienteAgendado>
+                      Tipo de doença Cronica:{" "}
+                      {consultasPacientes.paciente.tipo_doenca_cronica
+                        ? consultasPacientes.paciente.tipo_doenca_cronica
+                        : "Não possui doença cronica"}
+                    </ItemPacienteAgendado>
+                  </Box>
+                </Box>
+              );
+            })}
+          </Box>
         </TabPanel>
         <TabPanel value={value} index={2}>
           <FormControl fullWidth>
@@ -178,10 +263,11 @@ export default function medico(props) {
               label="Age"
               onChange={handleChangeSelect}
             >
-              {listaConsultasPaciente.map((paciente) => {
+              {consultasSemHistorico.map((paciente) => {
                 return (
                   <MenuItem value={paciente.id}>
-                    {paciente.paciente.nome} em {moment(paciente.data).format("DD/MM")}
+                    {paciente.paciente.nome} em {moment(paciente.data).add(1, "days").format("DD/MM")} as{" "}
+                    {paciente.hora}
                   </MenuItem>
                 );
               })}

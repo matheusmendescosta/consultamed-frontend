@@ -6,6 +6,8 @@ import { Alert, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextFie
 import SendIcon from "@mui/icons-material/Send";
 import { Box, Container } from "@mui/system";
 import { useRouter } from "next/router";
+import Head from "next/head.js";
+import Image from "next/image.js";
 
 const Item = styled("div")(({}) => ({
   borderRadius: "4px",
@@ -58,6 +60,12 @@ export default function Medico(props) {
 
   return (
     <>
+      <Head>
+        <title>Cadastrar - Medico</title>
+        <meta name="description" content="Agendamento de consultas online" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/cadastro.ico" />
+      </Head>
       <Navbar />
       <Container maxWidth="xg">
         <Box
@@ -66,34 +74,38 @@ export default function Medico(props) {
             "& > :not(style)": { m: 1 },
           }}
         >
+          <Box sx={{ display: { xs: "none", md: "flex", justifyContent: "center" } }}>
+            <Image src="/cadastroImage.png" width={180} height={100} alt="logo_consultamed" />
+          </Box>
           <Typography
             variant="h6"
             noWrap
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "sans-serif ",
+              display: { xs: "none", md: "flex", justifyContent: "center" },
+              fontFamily: "Inter",
+              fontSize: 36,
               fontWeight: 700,
               letterSpacing: ".1rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            Cadastre-se
+            CRIE SUA CONTA
           </Typography>
           <Typography
             variant="p"
             noWrap
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
+              display: { xs: "none", md: "flex", justifyContent: "center" },
               fontWeight: 700,
               letterSpacing: ".1rem",
               color: "grey",
               textDecoration: "none",
             }}
           >
-            Agendamento simples e fácil
+            Suas informações estão seguras e são necessárias para prescrição digital
           </Typography>
           <form onSubmit={handleSubmit}>
             <Grid container>
@@ -113,12 +125,12 @@ export default function Medico(props) {
               <Grid item={true} xs={12}>
                 <Item>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Médicos</InputLabel>
+                    <InputLabel id="demo-simple-select-label">Especialidades</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={especialidade}
-                      label="Médicos"
+                      label="Especialidades"
                       onChange={handleChange}
                     >
                       {props.especialidades.map((elem) => {
