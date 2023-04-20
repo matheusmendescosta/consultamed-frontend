@@ -94,11 +94,11 @@ export default function medico(props) {
   const [tratamento, setTratamento] = React.useState("");
   const [status, setStatus] = React.useState("");
   const router = useRouter();
-  const medico_id = router.query.id;
-  const informacoesMedico = props.medicos.find((medico) => medico.id == medico_id);
-  const listaConsultasPaciente = props.consultas.filter((medico) => medico.medicoId == medico_id);
-  const listaHistoricoPaciente = props.historicoConsultas.filter((medico) => medico.consulta.medicoId == medico_id);
 
+  const medico_id = router.query.id;
+
+  const informacoesMedico = props.medicos.find((medico) => medico.id == medico_id);
+  const listaHistoricoPaciente = props.historicoConsultas.filter((medico) => medico.consulta.medicoId == medico_id);
   const consultasSemHistorico = props.consultas.filter((consulta) => {
     if (consulta.medicoId == medico_id) {
       const temHistoricoConsulta = props.historicoConsultas.some((historico) => historico.consultaId === consulta.id);
@@ -234,7 +234,10 @@ export default function medico(props) {
                       // aria-controls="panel1a-content"
                       // id="panel1a-header"
                     >
-                      <Typography>Informações do agendamento</Typography>
+                      <Typography>
+                        {consultasPacientes.paciente.nome} em{" "}
+                        {moment(consultasPacientes.data).add(1, "days").format("LL")} as {consultasPacientes.hora}
+                      </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -352,7 +355,7 @@ export default function medico(props) {
                 <Accordion sx={{ margin: 2 }}>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
                     <Typography>
-                      Consultas do dia {moment(paciente.dataHota).format("DD/MM")} com o paciente{" "}
+                      Consultas do dia {moment(paciente.consulta.data).add(1, "days").format("DD/MM")} com o paciente{" "}
                       {paciente.consulta.paciente.nome}
                     </Typography>
                   </AccordionSummary>

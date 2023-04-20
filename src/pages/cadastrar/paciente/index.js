@@ -18,21 +18,12 @@ const Item = styled("div")(({}) => ({
   margin: "10px",
 }));
 
-function blobToDataURL(blob, callback) {
-  var a = new FileReader();
-  a.onload = function (e) {
-    callback(e.target.result);
-  };
-  a.readAsDataURL(blob);
-}
-
 export default function cadastrarPaciente() {
   const [status, setStatus] = React.useState("");
   const [checkedAlergia, setCheckedAlergia] = React.useState(false);
   const [checkedDoencaCronica, setCheckedDoencaCronica] = React.useState(false);
   const [checkedMedicacaoContinua, setCheckedMedicacaoContinua] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  const [imgPerfil, setImgPerfil] = React.useState("");
   const router = useRouter(); //router push redirecionar para pagina do paciente https://nextjs.org/docs/api-reference/next/router
 
   const handleClick = () => {
@@ -58,25 +49,9 @@ export default function cadastrarPaciente() {
     </React.Fragment>
   );
 
-  const [eventSave, updateEventSave] = React.useReducer(
-    (prev, next) => {
-      return { ...prev, ...next };
-    },
-    {
-      nome: "",
-      dataNascimento: "",
-      telefone: "",
-      email: "",
-      altura: "",
-      peso: "",
-      rua: "",
-      bairro: "",
-      municipio: "",
-      estado: "",
-      numero: "",
-      cep: "",
-    }
-  );
+  const [eventSave, updateEventSave] = React.useReducer((prev, next) => {
+    return { ...prev, ...next };
+  }, {});
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -100,9 +75,8 @@ export default function cadastrarPaciente() {
         tipo_doenca_cronica: eventSave.tipoDoencaCronica,
         medicacao_continua: checkedDoencaCronica,
         tipo_medicacao_continua: eventSave.tipoMedicacaoContinua,
-        // image_perfil: imgPerfil,
       });
-      console.log(response); // dados retornados pelo servidor
+      console.log(response);
       router.push(`/paciente/${response.id}`);
       setStatus("Paciente cadastrado com sucesso");
     } catch (error) {
@@ -122,16 +96,7 @@ export default function cadastrarPaciente() {
   const handleChangeMedicacaoContinua = (event) => {
     setCheckedMedicacaoContinua(event.target.checked);
   };
-  // console.log("image perfil", eventSave.imagePerfil);
 
-  // const handleChangeImgFile = (event) => {
-  //   blobToDataURL(event.target.files[0], function (dataURL) {
-  //     updateEventSave({ imagePerfil: event.target.value });
-  //     setImgPerfil(dataURL);
-  //   });
-  //   console.log(event.target.files[0]);
-  // };
-  //console.log("img teste", imgPerfil);
   return (
     <>
       <Head>

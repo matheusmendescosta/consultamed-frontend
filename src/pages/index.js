@@ -124,7 +124,7 @@ export default function Home() {
                       >
                         <Stack>
                           <AddAlertIcon fontSize="large" sx={{ color: "white" }} />
-                          <Typography color="#FFFF">Planos à partir de R$59,99</Typography>
+                          <Typography color="#FFFF">Planos médicos à partir de R$39,99</Typography>
                         </Stack>
                       </Box>
                     </Box>
@@ -153,7 +153,7 @@ export default function Home() {
                         <Stack>
                           <DescriptionIcon fontSize="large" sx={{ color: "#3FC1F9" }} />
                           <Typography textAlign="left" color="black">
-                            Renovação de Receita <br />à partir de R$ 48,99
+                            Agende uma consulta <br /> é totalmente grátis
                           </Typography>
                         </Stack>
                       </Box>

@@ -4,15 +4,8 @@ import ApiPaciente from "../../service/paciente/ApiPaciente.js";
 import ApiMedico from "../../service/medico/ApiMedico.js";
 import ApiConsulta from "../../service/consulta/ApiConsulta.js";
 import Navbar from "@/components/Navbar/index.js";
-import styled from "@emotion/styled";
 import {
-  Alert,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   FormControl,
   Grid,
   InputLabel,
@@ -36,10 +29,7 @@ import "moment/locale/pt-br";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-
 import List from "@mui/material/List";
-
-import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import Footer from "@/components/Footer/index.js";
 
@@ -110,14 +100,6 @@ export default function paciente(props) {
   const historicoConsultaPaciente = props.historicoConsultas.filter(
     (pacient) => pacient.consulta.pacienteId == paciente_id
   );
-
-  const proximasConsultas = props.consultas.filter((proximaConsulta) => proximaConsulta.pacienteId == paciente_id);
-
-  // const consultasSemHistorico = consultas.filter(consulta => {
-  //   const consultaId = consulta.id;
-  //   const hasHistorico = historico_consulta.find(historico => historico.consultaId === consultaId);
-  //   return !hasHistorico;
-  // });
 
   const consultasSemHistorico = props.consultas.filter((consulta) => {
     if (consulta.pacienteId == paciente_id) {
@@ -424,7 +406,7 @@ export default function paciente(props) {
                       id="panel1a-header"
                     >
                       <Typography>
-                        Consultas do dia {moment(info.dataHota).add(1, "days").format("LLL")} com o Doutor{" "}
+                        Consultas do dia {moment(info.consulta.data).add(1, "days").format("LLL")} com o Doutor{" "}
                         {info.consulta.medico.nome}
                       </Typography>
                     </AccordionSummary>
