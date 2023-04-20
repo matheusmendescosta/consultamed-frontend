@@ -228,26 +228,53 @@ export default function medico(props) {
                     boxShadow: 2,
                   }}
                 >
-                  <Typography sx={{ textAlign: "center", fontStyle: "oblique", margin: 1 }}>
-                    Informações do agendamento
-                  </Typography>
-                  <Box sx={{ display: "flex", flexDirection: "column" }}>
-                    <ItemPacienteAgendado>Paciente: {consultasPacientes.paciente.nome}</ItemPacienteAgendado>
-                    <ItemPacienteAgendado>
-                      Data: {moment(consultasPacientes.data).add(1, "days").format("DD/MM/YYYY")}
-                    </ItemPacienteAgendado>
-                    <ItemPacienteAgendado>Hora: {consultasPacientes.hora}</ItemPacienteAgendado>
-                    <ItemPacienteAgendado>Contato: {consultasPacientes.paciente.telefone}</ItemPacienteAgendado>
-                    <ItemPacienteAgendado>
-                      Doença Cronica: {`${consultasPacientes.paciente.doenca_cronica == true ? "Sim" : "Não"}`}
-                    </ItemPacienteAgendado>
-                    <ItemPacienteAgendado>
-                      Tipo de doença Cronica:{" "}
-                      {consultasPacientes.paciente.tipo_doenca_cronica
-                        ? consultasPacientes.paciente.tipo_doenca_cronica
-                        : "Não possui doença cronica"}
-                    </ItemPacienteAgendado>
-                  </Box>
+                  <Accordion sx={{ margin: 2 }}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      // aria-controls="panel1a-content"
+                      // id="panel1a-header"
+                    >
+                      <Typography>Informações do agendamento</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Box sx={{ display: "flex", flexDirection: "column" }}>
+                        <ItemPacienteAgendado>Paciente: {consultasPacientes.paciente.nome}</ItemPacienteAgendado>
+                        <ItemPacienteAgendado>
+                          Data: {moment(consultasPacientes.data).add(1, "days").format("DD/MM/YYYY")}
+                        </ItemPacienteAgendado>
+                        <ItemPacienteAgendado>Hora: {consultasPacientes.hora}</ItemPacienteAgendado>
+                        <ItemPacienteAgendado>Contato: {consultasPacientes.paciente.telefone}</ItemPacienteAgendado>
+                        <ItemPacienteAgendado>
+                          Alergia: {`${consultasPacientes.paciente.alergia == true ? "Sim" : "Não"}`}
+                        </ItemPacienteAgendado>
+                        <ItemPacienteAgendado>
+                          Tipo de Alergia:{" "}
+                          {consultasPacientes.paciente.tipo_alergia
+                            ? consultasPacientes.paciente.tipo_alergia
+                            : "Não possui doença cronica"}
+                        </ItemPacienteAgendado>
+                        <ItemPacienteAgendado>
+                          Doença Cronica: {`${consultasPacientes.paciente.doenca_cronica == true ? "Sim" : "Não"}`}
+                        </ItemPacienteAgendado>
+                        <ItemPacienteAgendado>
+                          Tipo de doença Cronica:{" "}
+                          {consultasPacientes.paciente.tipo_doenca_cronica
+                            ? consultasPacientes.paciente.tipo_doenca_cronica
+                            : "Não possui doença cronica"}
+                        </ItemPacienteAgendado>
+                        <ItemPacienteAgendado>
+                          Medicação continua:{" "}
+                          {`${consultasPacientes.paciente.medicacao_continua == true ? "Sim" : "Não"}`}
+                        </ItemPacienteAgendado>
+                        <ItemPacienteAgendado>
+                          Tipo de medicação continua:{" "}
+                          {consultasPacientes.paciente.tipo_medicacao_continua
+                            ? consultasPacientes.paciente.tipo_medicacao_continua
+                            : "Não possui doença cronica"}
+                        </ItemPacienteAgendado>
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
                 </Box>
               );
             })}
