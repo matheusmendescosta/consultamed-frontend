@@ -22,6 +22,7 @@ import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import { Divider } from "@mui/material";
 import Footer from "@/components/Footer";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 function Copyright() {
   return (
@@ -39,6 +40,7 @@ function Copyright() {
 const theme = createTheme();
 
 export default function Home() {
+  const { data: session, status } = useSession();
   const especialistas = [
     { Nome: "Clínico Geral", Image: <MedicationIcon /> },
     { Nome: "Psiquiatria", Image: <PsychologyAltIcon /> },
@@ -176,6 +178,22 @@ export default function Home() {
                   Selecione a especialidade que deseja, e o nosso profissional entrará <br /> em contato no horário e
                   data escolhido por você.{" "}
                 </Typography>
+                {!session && (
+                  <>
+                    Not signed in <br />
+                    <button onClick={signIn}>Sign In</button>
+                  </>
+                )}
+                {session && (
+                  <div>
+                    Signed in as {session.user.email} <br />
+                    <div>You can now access our super secret pages</div>
+                    <button>
+                      <Link href="/secret">To the secret</Link>
+                    </button>
+                    <button onClick={signOut}>Sign out</button>
+                  </div>
+                )}
               </Grid>
               <Grid xs={4}>
                 <Button
