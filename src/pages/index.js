@@ -178,7 +178,7 @@ export default function Home() {
                   Selecione a especialidade que deseja, e o nosso profissional entrará <br /> em contato no horário e
                   data escolhido por você.{" "}
                 </Typography>
-                {!session && (
+                {/* {!session && (
                   <>
                     Not signed in <br />
                     <button onClick={signIn}>Sign In</button>
@@ -193,7 +193,7 @@ export default function Home() {
                     </button>
                     <button onClick={signOut}>Sign out</button>
                   </div>
-                )}
+                )} */}
               </Grid>
               <Grid xs={4}>
                 <Button
